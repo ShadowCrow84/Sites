@@ -1,10 +1,10 @@
-from flask import Flask
+from flask import Flask, render_template
 import random 
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return f' <a href="/random_facts">Посмотреть случайный факт!</a>'
+    return render_template("index.html")
     
 @app.route('/random_facts')
 def random_facts():
@@ -14,10 +14,9 @@ def random_facts():
 @app.route('/random_passwords')
 def random_passwords():
     elements = "+-/*!&$#?=@abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-    people_lenght = int(input("Введите длину пароля"))
     password = ""
-for i in range(people_lenght):
-    password += random.choice(elements)
-    return f'<a href="/random_password">Посмотреть случайный пароль!</a>'
+    for i in range(10):
+        password += random.choice(elements)
+    return f'{password}'
     
 app.run(debug = True)
