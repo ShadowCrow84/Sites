@@ -1,22 +1,23 @@
-from flask import Flask, render_template
-import random 
-app = Flask(__name__)
+import shutil
+import os
 
-@app.route('/')
-def hello_world():
-    return render_template("index.html")
-    
-@app.route('/random_facts')
-def random_facts():
-    facts = ['Каждый 10 человек болеет технологичным зависимостью','Технологическая зависимость самая распрастраненная','Используйте технологии по назначению']
-    return f'<p>{random.choice(facts)}</p> '
+def archive_folder(folder_path, output_path):
+    """
+    Архивирует указанную папку в zip-формате.
 
-@app.route('/random_passwords')
-def random_passwords():
-    elements = "+-/*!&$#?=@abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-    password = ""
-    for i in range(10):
-        password += random.choice(elements)
-    return f'{password}'
+    Args:
+        folder_path (str): Путь к папке, которую нужно архивировать.
+        output_path (str): Путь для сохранения архива (без расширения).
+    """
+    if not os.path.isdir(folder_path):
+        raise FileNotFoundError(f"Папка '{folder_path}' не найдена или это не папка.")
     
-app.run(debug = True)
+    # Создаём архив в формате zip
+    shutil.make_archive(output_path, 'zip', folder_path)
+    print(f"Папка '{folder_path}' успешно архивирована в '{output_path}.zip'")
+
+# Пример использования
+folder_to_archive = "/workspaces/Sites/diary"  # Укажите путь к папке
+archive_name = "/workspaces/Sites/diary"  # Укажите путь и имя архива (без расширения)
+
+archive_folder(folder_to_archive, archive_name)
